@@ -92,11 +92,22 @@ async function sendMessage(text) {
       body: JSON.stringify({ messages: messages.slice(-20) })
     });
 
-    const data = await response.json();
+    
+const raw = await response.text();
 
-    if (!response.ok) {
-      throw new Error(data.error || `Server error: ${response.status}`);
-    }
+let data;
+try {
+  data = JSON.parse(raw);
+} catch (error) {
+  const preview = raw.slice(0, 180).replace(/\s+/g, " ");
+  throw new Error(
+    `Chat API returned non-JSON (HTTP ${response.status}). Response: ${preview || "empty"}`
+  );
+}
+
+if (!response.ok) {
+  throw new Error(data.error || `Server error: ${response.status}`);
+}
 
     const reply = data.reply || data.message || data.response;
 
