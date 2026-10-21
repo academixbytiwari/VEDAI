@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+    <!-- Background (गहरा नीला रंग) -->
+    <rect width="100%" height="100%" fill="#0a192f"/>
+    
+    <!-- Lotus Logo Container -->
+    <g transform="translate(250, 260)" fill="none" stroke="#ffd700" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <!-- Center Petal (बीच की पत्ती) -->
+        <path d="M 0,-100 C -25,-50 -25,0 0,20 C 25,0 25,-50 0,-100 Z" stroke="#ebd078" stroke-width="3.5"/>
+        
+        <!-- Inner Left Petal -->
+        <path d="M 0,20 C -40,0 -60,-40 -45,-85 C -25,-45 -10,-20 0,20 Z"/>
+        <!-- Inner Right Petal -->
+        <path d="M 0,20 C 40,0 60,-40 45,-85 C 25,-45 10,-20 0,20 Z"/>
+        
+        <!-- Mid Left Petal -->
+        <path d="M 0,20 C -70,10 -100,-15 -85,-55 C -55,-25 -25,-5 0,20 Z"/>
+        <!-- Mid Right Petal -->
+        <path d="M 0,20 C 70,10 100,-15 85,-55 C 55,-25 25,-5 0,20 Z"/>
+        
+        <!-- Outer Left Petal -->
+        <path d="M 0,20 C -100,30 -130,5 -115,-25 C -75,-5 -35,5 0,20 Z"/>
+        <!-- Outer Right Petal -->
+        <path d="M 0,20 C 100,30 130,5 115,-25 C 75,-5 35,5 0,20 Z"/>
+        
+        <!-- Bottom Base Curves (नीचे की रेखाएं) -->
+        <path d="M -80,30 C -40,50 40,50 80,30" stroke-width="2.5"/>
+        <path d="M -60,42 C -20,55 20,55 60,42" stroke-width="2"/>
+    </g>
+</svg>

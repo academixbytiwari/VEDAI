@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a192f">
+  <meta name="description" content="VEDAI — Your personal AI assistant. Ask questions, explore ideas and learn smarter.">
+  <title>VEDAI — Your AI Assistant</title>
+  <link rel="icon" type="image/svg+xml" href="./vedai-logo.svg">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body data-theme="dark">
+
+  <div class="app-shell">
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <a class="brand" href="./index.html" aria-label="VEDAI home">
+          <img src="./vedai-logo.svg" alt="VEDAI lotus logo" class="brand-logo">
+          <span class="brand-name">VEDAI<span class="brand-dot">.</span></span>
+        </a>
+
+        <button class="icon-btn mobile-close" id="close-sidebar" aria-label="Close sidebar">
+          <svg viewBox="0 0 24 24"><path d="m18 6-12 12M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <button class="new-chat-btn" id="new-chat">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        <span>New conversation</span>
+        <span class="shortcut">↵</span>
+      </button>
+
+      <div class="sidebar-section">
+        <p class="section-label">YOUR WORKSPACE</p>
+        <button class="nav-item active" type="button">
+          <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 5.5v15M8 7h8M8 11h7"/></svg>
+          <span>AI Assistant</span>
+          <span class="nav-indicator"></span>
+        </button>
+      </div>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-status">
+          <span class="status-light" id="sidebar-status-dot"></span>
+          <div>
+            <span class="status-title">System status</span>
+            <span class="status-subtitle" id="sidebar-status-text">Connecting...</span>
+          </div>
+        </div>
+
+        <div class="sidebar-footer">
+          <img src="./vedai-logo.svg" alt="" class="footer-logo">
+          <div>
+            <strong>VEDAI</strong>
+            <span>Your space to explore</span>
+          </div>
+          <span class="version">LOCAL AI</span>
+        </div>
+      </div>
+    </aside>
+
+    <div class="mobile-overlay" id="mobile-overlay"></div>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-btn menu-btn" id="open-sidebar" aria-label="Open sidebar">
+            <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+          <div class="mobile-brand">
+            <img src="./vedai-logo.svg" alt="" class="mobile-logo">
+            <span>VEDAI</span>
+          </div>
+          <div class="model-pill">
+            <span class="model-dot"></span>
+            <span id="model-name">AI Assistant</span>
+            <svg viewBox="0 0 24 24" class="tiny-chevron"><path d="m7 10 5 5 5-5"/></svg>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="connection" id="connection">
+            <span class="connection-dot"></span>
+            <span id="connection-text">Checking connection</span>
+          </div>
+
+          <span class="topbar-divider"></span>
+
+          <button class="theme-toggle" id="theme-toggle" type="button"
+                  aria-label="Switch to light mode" title="Switch theme">
+            <svg class="moon-icon" viewBox="0 0 24 24">
+              <path d="M20.2 15.1A8.5 8.5 0 0 1 8.9 3.8 8.7 8.7 0 1 0 20.2 15.1Z"/>
+            </svg>
+            <svg class="sun-icon" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <section class="chat-area" id="chat" aria-live="polite">
+        <div class="welcome" id="welcome">
+
+          <div class="hero-logo-wrap">
+            <div class="hero-glow"></div>
+            <div class="hero-logo-card">
+              <img src="./vedai-logo.svg" alt="VEDAI lotus symbol" class="hero-logo">
+            </div>
+            <span class="orbit orbit-one"></span>
+            <span class="orbit orbit-two"></span>
+            <span class="orbit-dot"></span>
+          </div>
+
+          <div class="welcome-label">
+            <span class="label-line"></span>
+            YOUR PERSONAL AI
+            <span class="label-line"></span>
+          </div>
+
+          <h1>Ideas start here<span>.</span></h1>
+          <p class="welcome-description">
+            A little curiosity can take you anywhere.<br class="desktop-break">
+            What would you like to explore today?
+          </p>
+
+          <div class="suggestions" id="suggestions">
+            <button class="suggestion-card" type="button" data-prompt="Explain a difficult topic to me in simple language.">
+              <span class="suggestion-icon icon-purple">
+                <svg viewBox="0 0 24 24"><path d="M9 18h6m-5 3h4m-2-19a7 7 0 0 0-4 12.75c.6.4 1 1 1 1.75h6c0-.75.4-1.35 1-1.75A7 7 0 0 0 12 2Z"/></svg>
+              </span>
+              <span class="suggestion-copy">
+                <strong>Learn something</strong>
+                <span>Make hard topics simple</span>
+              </span>
+              <svg class="suggestion-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+            </button>
+
+            <button class="suggestion-card" type="button" data-prompt="Help me brainstorm creative and original ideas for a project.">
+              <span class="suggestion-icon icon-gold">
+                <svg viewBox="0 0 24 24"><path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-2-5.8L4 11l6-2.2L12 3Z"/><path d="m19 14 1.2 2.8L23 18l-2.8 1.2L19 22l-1.2-2.8L15 18l2.8-1.2L19 14Z"/></svg>
+              </span>
+              <span class="suggestion-copy">
+                <strong>Create something</strong>
+                <span>Explore fresh possibilities</span>
+              </span>
+              <svg class="suggestion-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+            </button>
+
+            <button class="suggestion-card" type="button" data-prompt="Help me make a practical step-by-step plan to achieve a goal.">
+              <span class="suggestion-icon icon-green">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/></svg>
+              </span>
+              <span class="suggestion-copy">
+                <strong>Plan your next step</strong>
+                <span>Turn goals into action</span>
+              </span>
+              <svg class="suggestion-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+            </button>
+
+            <button class="suggestion-card" type="button" data-prompt="Tell me something fascinating about science, technology or the universe.">
+              <span class="suggestion-icon icon-blue">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(-35 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(35 12 12)"/></svg>
+              </span>
+              <span class="suggestion-copy">
+                <strong>Explore the unknown</strong>
+                <span>Discover something surprising</span>
+              </span>
+              <svg class="suggestion-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="typing" id="typing" hidden>
+          <img src="./vedai-logo.svg" alt="" class="typing-logo">
+          <div class="typing-bubble">
+            <span></span><span></span><span></span>
+          </div>
+          <span class="typing-text">VEDAI is thinking</span>
+        </div>
+      </section>
+
+      <div class="composer-wrap">
+        <form class="composer" id="chat-form">
+          <textarea id="message" name="message" rows="1"
+            placeholder="Ask anything..." autocomplete="off"
+            aria-label="Your message" required></textarea>
+
+          <div class="composer-toolbar">
+            <div class="composer-hint">
+              <span class="hint-dot"></span>
+              <span>Curiosity has no limits</span>
+            </div>
+
+            <div class="composer-actions">
+              <button class="icon-btn voice-btn" id="voice" type="button"
+                      aria-label="Use voice input" title="Voice input">
+                <svg viewBox="0 0 24 24">
+                  <rect x="9" y="3" width="6" height="12" rx="3"/>
+                  <path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/>
+                </svg>
+              </button>
+
+              <button class="send-btn" id="send" type="submit" aria-label="Send message">
+                <svg viewBox="0 0 24 24"><path d="M12 19V5m-7 7 7-7 7 7"/></svg>
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <p class="disclaimer">
+          VEDAI can make mistakes. Verify important information.
+        </p>
+      </div>
+    </main>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
