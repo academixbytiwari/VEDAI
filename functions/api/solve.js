@@ -3,53 +3,61 @@ export async function onRequestPost({ request, env }) {
   try {
     if (!env.AI) {
       return Response.json(
-        { error: "Cloudflare AI binding is not configured." },
+        { error: "Workers AI binding is not configured." },
         { status: 503 }
       );
     }
 
-    const body = await request.json();
-    const question =
-      typeof body.question === "string"
-        ? body.question.trim()
-        : "";
+    const form = await request.formData();
+    const image = form.get("image");
+    const extraQuestion = form.get("question");
 
-    if (!question) {
+    if (!(image instanceof File) || image.size === 0) {
       return Response.json(
-        { error: "Please enter a question to solve." },
+        { error: "Please upload a question image." },
         { status: 400 }
       );
     }
 
-    if (question.length > 6000) {
+    if (!image.type.startsWith("image/")) {
       return Response.json(
-        { error: "Question is too long. Please keep it under 6000 characters." },
+        { error: "Please upload a valid image file." },
+        { status: 400 }
+      );
+    }
+
+    if (image.size > 5 * 1024 * 1024) {
+      return Response.json(
+        { error: "Image must be smaller than 5 MB." },
         { status: 413 }
       );
     }
 
-    const messages = [
-      {
-        role: "system",
-        content: `You are Academix AI Solver, a helpful school-level tutor.
-Solve the student's question accurately and explain the method step by step.
-Use clear, simple language appropriate for classes 8 to 12.
-Reply in the language used by the student: English, Hindi, or Roman Hinglish.
-For maths and science, show relevant formulas, calculations, units, and the final answer.
-For multiple-choice questions, explain why the selected option fits when possible.
-Never invent missing information. If the question is unclear, ask for the missing detail.
-Use readable plain text and avoid unnecessary introductions.`
-      },
-      {
-        role: "user",
-        content: question
-      }
-    ];
+    const question =
+      typeof extraQuestion === "string"
+        ? extraQuestion.trim().slice(0, 2000)
+        : "";
+
+    const imageBytes = Array.from(
+      new Uint8Array(await image.arrayBuffer())
+    );
+
+    const prompt = [
+      "You are Academix AI, a helpful school-level tutor.",
+      "Read the question in the supplied image carefully.",
+      "Solve it step by step in clear, simple language.",
+      "For maths, show formulas and calculations.",
+      "For science, explain the reasoning and include units where needed.",
+      "If the image is unclear or the question cannot be read, say so.",
+      "Do not invent unreadable text or missing information.",
+      question ? `Additional context from student: ${question}` : ""
+    ].filter(Boolean).join("\n");
 
     const result = await env.AI.run(
-      "@cf/meta/llama-3.2-1b-instruct",
+      "@cf/meta/llama-3.2-11b-vision-instruct",
       {
-        messages,
+        prompt,
+        image: imageBytes,
         max_tokens: 1000,
         temperature: 0.2
       }
@@ -61,19 +69,21 @@ Use readable plain text and avoid unnecessary introductions.`
         : "";
 
     if (!answer) {
+      console.error("Vision model returned no response.");
       return Response.json(
-        { error: "The AI could not solve this question. Please try again." },
+        { error: "No solution was returned. Please try another image." },
         { status: 502 }
       );
     }
 
     return Response.json({ answer });
   } catch (error) {
-    console.error("Academix solver error:", error);
+    console.error("Image solver error:", error);
 
     return Response.json(
-      { error: "Question solving failed. Please try again shortly." },
+      { error: "Image solving failed. Please try again." },
       { status: 500 }
     );
   }
 }
+
