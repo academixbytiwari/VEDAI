@@ -6,26 +6,33 @@ import { onRequestPost as solveHandler } from "./functions/api/solve.js";
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    const path = url.pathname;
+    const method = request.method;
 
-    if (url.pathname === "/api/health" && request.method === "GET") {
+    // VEDAI health check
+    if (path === "/api/health" && method === "GET") {
       return healthHandler({ request, env, params: {} });
     }
 
-    if (url.pathname === "/api/chat" && request.method === "POST") {
+    // VEDAI chat
+    if (path === "/api/chat" && method === "POST") {
       return chatHandler({ request, env, params: {} });
     }
 
-    if (url.pathname === "/api/solve" && request.method === "POST") {
+    // Academix image question solver
+    if (path === "/api/solve" && method === "POST") {
       return solveHandler({ request, env, params: {} });
     }
 
-    if (["/api/chat", "/api/health", "/api/solve"].includes(url.pathname)) {
+    // Reject unsupported API methods
+    if (["/api/chat", "/api/health", "/api/solve"].includes(path)) {
       return Response.json(
         { error: "Method not allowed" },
         { status: 405 }
       );
     }
 
+    // Serve website assets
     if (!env.ASSETS) {
       return new Response("Website assets are not configured.", {
         status: 500
