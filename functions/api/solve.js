@@ -44,13 +44,12 @@ export async function onRequestPost({ request, env }) {
 
     const prompt = [
       "You are Academix AI, a helpful school-level tutor.",
-      "Read the question in the supplied image carefully.",
-      "Solve it step by step in clear, simple language.",
+      "Read the question in the image carefully.",
+      "Solve it step by step in simple language.",
       "For maths, show formulas and calculations.",
-      "For science, explain the reasoning and include units where needed.",
-      "If the image is unclear or the question cannot be read, say so.",
-      "Do not invent unreadable text or missing information.",
-      question ? `Additional context from student: ${question}` : ""
+      "For science, explain reasoning and include units.",
+      "If the image is unclear, say what cannot be read.",
+      question ? `Student context: ${question}` : ""
     ].filter(Boolean).join("\n");
 
     const result = await env.AI.run(
@@ -69,19 +68,25 @@ export async function onRequestPost({ request, env }) {
         : "";
 
     if (!answer) {
-      console.error("Vision model returned no response.");
+      console.error("Vision model returned no answer:", result);
+
       return Response.json(
-        { error: "No solution was returned. Please try another image." },
+        { error: "The AI returned no answer. Check Worker logs." },
         { status: 502 }
       );
     }
 
     return Response.json({ answer });
   } catch (error) {
-    console.error("Image solver error:", error);
+    console.error("Image solver failure:", error);
 
+    // Temporary diagnostic: expose the actual error message.
     return Response.json(
-      { error: "Image solving failed. Please try again." },
+      {
+        error: error instanceof Error
+          ? error.message
+          : String(error)
+      },
       { status: 500 }
     );
   }
